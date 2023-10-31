@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import API_URL from '../utils/urls'
 
 export const ThoughtInput = ({ setThoughts }) => {
     const [message, setMessage] = useState('')
@@ -6,14 +7,17 @@ export const ThoughtInput = ({ setThoughts }) => {
     const handleFormSubmit = (event) => {
         event.preventDefault()
 
-        //Make the POST request to the API when form is submitted
-        fetch('https://happy-thoughts-ux7hkzgmwa-uc.a.run.app/thoughts', {
+        //Store POST options in variable
+        const options = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ message })
-        })
+        }
+
+        //Make the POST request to the API when form is submitted
+        fetch(API_URL, options)
         .then((res) => res.json())
         .then((newThought) => {
             //Handle response if needed
