@@ -2,14 +2,32 @@ import { useState } from 'react'
 import API_URL from '../utils/urls'
 
 export const ThoughtInput = ({ setThoughts }) => {
-    const [message, setMessage] = useState('')
     const maxCharacters = 140
+    const minCharacters = 5
+    const [message, setMessage] = useState('')
     const [characterCount, setCharacterCount] = useState(maxCharacters)
     const [isOverLimit, setIsOverLimit] = useState(false)
     const [isCloseToLimit, setIsCloseToLimit] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
+    const [isVibrating, setIsVibrating] = useState(false)
 
     const handleFormSubmit = (event) => {
         event.preventDefault()
+
+        if (message.length < minCharacters) {
+            setErrorMessage('Message is too short.')
+            setIsVibrating(true)
+        } else if (message.length > maxCharacters) {
+            setErrorMessage('Message is too long.')
+            setIsVibrating(true)
+        } else {
+            setErrorMessage('') //Clear error message
+            setIsVibrating(false) //Stop vibrating
+        }
+
+        if (message.length < minCharacters || message.length > maxCharacters) {
+            return //Don't proceed if message is too long or too short
+        }
 
         //Store POST options in variable
         const options = {
@@ -21,7 +39,7 @@ export const ThoughtInput = ({ setThoughts }) => {
         }
 
         //Make the POST request to the API when form is submitted
-        fetch(API_URL,   options)
+        fetch(API_URL, options)
         .then((res) => res.json())
         .then((newThought) => {
             //Handle response if needed
@@ -34,18 +52,27 @@ export const ThoughtInput = ({ setThoughts }) => {
         .catch(error => console.log('error: ', error))
     }
 
+
         const handleInputChange = (event) => {
             const inputText = event.target.value
             setMessage(inputText)
 
+            //Clear error message and vibration when user starts typing
+            setErrorMessage('')
+            setIsVibrating(false)
+
+            if (inputText.length > maxCharacters || inputText.length < minCharacters) {
+                setIsVibrating(true)
+            } else {
+                setIsVibrating(false)
+            }
+
             //Calculate remaining characters 
             const remainingCharacters = maxCharacters - inputText.length
-
-            //Use this to apply red color to text when user exceeds the character limit
             const isCloseToLimit = remainingCharacters < 20 && remainingCharacters > 0
             const isOverLimit = remainingCharacters < 0
 
-            //Update the character count 
+            //Update state 
             setCharacterCount(remainingCharacters)
             setIsOverLimit(isOverLimit)
             setIsCloseToLimit(isCloseToLimit)
@@ -64,9 +91,13 @@ export const ThoughtInput = ({ setThoughts }) => {
                     placeholder='My happy thought...'
                     value={message} 
                     onChange={handleInputChange}
+                    style={{ animation: isVibrating ? 'shake 0.5s' : 'none' }}
                     />
                 </div>
-                <p>Characters remaining: <span style={{ color: isCloseToLimit ? 'orange' : isOverLimit ? 'red' : 'initial' }}>{characterCount}</span></p>
+                <p>Characters remaining:{" "} 
+                    <span style={{ color: isCloseToLimit ? 'orange' : isOverLimit ? 'red' : 'initial' }}>{characterCount}</span>
+                </p>
+                {errorMessage && <p style={{ fontStyle: 'italic', color: 'red' }}>{errorMessage}</p>}
                 <button type='submit'>Submit</button>
             </form>
         </div>
