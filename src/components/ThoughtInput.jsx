@@ -17,7 +17,7 @@ export const ThoughtInput = ({ setThoughts }) => {
         }
 
         //Make the POST request to the API when form is submitted
-        fetch(API_URL, options)
+        fetch(API_URL,   options)
         .then((res) => res.json())
         .then((newThought) => {
             //Handle response if needed
