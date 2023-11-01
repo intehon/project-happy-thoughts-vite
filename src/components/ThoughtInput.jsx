@@ -3,6 +3,10 @@ import API_URL from '../utils/urls'
 
 export const ThoughtInput = ({ setThoughts }) => {
     const [message, setMessage] = useState('')
+    const maxCharacters = 140
+    const [characterCount, setCharacterCount] = useState(maxCharacters)
+    const [isOverLimit, setIsOverLimit] = useState(false)
+    const [isCloseToLimit, setIsCloseToLimit] = useState(false)
 
     const handleFormSubmit = (event) => {
         event.preventDefault()
@@ -28,8 +32,24 @@ export const ThoughtInput = ({ setThoughts }) => {
             setMessage('')
         })
         .catch(error => console.log('error: ', error))
+    }
 
-}
+        const handleInputChange = (event) => {
+            const inputText = event.target.value
+            setMessage(inputText)
+
+            //Calculate remaining characters 
+            const remainingCharacters = maxCharacters - inputText.length
+
+            //Use this to apply red color to text when user exceeds the character limit
+            const isCloseToLimit = remainingCharacters < 20 && remainingCharacters > 0
+            const isOverLimit = remainingCharacters < 0
+
+            //Update the character count 
+            setCharacterCount(remainingCharacters)
+            setIsOverLimit(isOverLimit)
+            setIsCloseToLimit(isCloseToLimit)
+        }
 
     return (
         <div>
@@ -43,9 +63,10 @@ export const ThoughtInput = ({ setThoughts }) => {
                     cols={30} 
                     placeholder='My happy thought...'
                     value={message} 
-                    onChange={(e) => setMessage(e.target.value)} 
+                    onChange={handleInputChange}
                     />
                 </div>
+                <p>Characters remaining: <span style={{ color: isCloseToLimit ? 'orange' : isOverLimit ? 'red' : 'initial' }}>{characterCount}</span></p>
                 <button type='submit'>Submit</button>
             </form>
         </div>
