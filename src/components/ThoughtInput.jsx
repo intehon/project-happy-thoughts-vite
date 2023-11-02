@@ -17,9 +17,11 @@ export const ThoughtInput = ({ setThoughts }) => {
         if (message.length < minCharacters) {
             setErrorMessage('Message is too short.')
             setIsVibrating(true)
+            return
         } else if (message.length > maxCharacters) {
             setErrorMessage('Message is too long.')
             setIsVibrating(true)
+            return
         } else {
             setErrorMessage('') //Clear error message
             setIsVibrating(false) //Stop vibrating
@@ -59,13 +61,6 @@ export const ThoughtInput = ({ setThoughts }) => {
 
             //Clear error message and vibration when user starts typing
             setErrorMessage('')
-            setIsVibrating(false)
-
-            if (inputText.length > maxCharacters || inputText.length < minCharacters) {
-                setIsVibrating(true)
-            } else {
-                setIsVibrating(false)
-            }
 
             //Calculate remaining characters 
             const remainingCharacters = maxCharacters - inputText.length

@@ -4,7 +4,9 @@ import moment from 'moment/moment'
 
 export const Thoughts = ({ thoughts }) => {
     const [thoughtsData, setThoughtsData] = useState([]) //State to store thoughts
-    const [likedThoughts, setLikedThoughts] = useState([]) // State to store "likes" on thoughts
+    const [likedThoughts, setLikedThoughts] = useState([]) //State to store "likes" on thoughts
+    const [likeCount, setLikeCount] = useState(0) //Initialize like count to 0
+
     
     //Fetch the thoughts array from the API
     useEffect(() => {
@@ -23,29 +25,42 @@ export const Thoughts = ({ thoughts }) => {
             setLikedThoughts(JSON.parse(storedLikedThoughts))
         }
 
-    }, [thoughts]) //Include thoughts in the dependency array
+        //calculate the like count based on liked thoughts
+        const likeCountFromStorage = parseInt(localStorage.getItem('likeCount', 10))
+        if (!isNaN(likeCountFromStorage)) {
+            setLikeCount(likeCountFromStorage)
+        }
+    }, [thoughts])
+
 
     const handleLikeClick = (thoughtId) => {
         if (!likedThoughts.includes(thoughtId)) {
-            //Add thought ID to the likedThoughts array
+            //Update liked thoughts array in local state
             setLikedThoughts([...likedThoughts, thoughtId])
 
-            //Store liked thought ID in local storage
-            localStorage.setItem('likedThoughts', JSON.stringify(likedThoughts.concat(thoughtId)))
-        
-        //Find the thought to update in the local state
-        const updatedThoughtsData = thoughtsData.map((thought) => {
-            if (thought._id === thoughtId) {
-                return {
-                    ...thought,
-                    hearts: thought.hearts + 1, //Increase the hearts count
-                }
-            }
-            return thought
-        })
+            //Increment like count in local state
+            const updatedLikeCount = likeCount + 1
+            setLikeCount(updatedLikeCount)
 
-        //Update the local state with the new data
-        setThoughtsData(updatedThoughtsData)
+            //Store updated liked thoughts in local storage
+            localStorage.setItem('likedThoughts', JSON.stringify([...likedThoughts, thoughtId]))
+            //Store updated like count in local storage
+            localStorage.setItem('likeCount', updatedLikeCount.toString())
+
+            //Update the thought's hearts immediately in the local state
+            
+            setThoughtsData((prevThoughtsData) =>
+            prevThoughtsData.map((thought) => {
+                if (thought._id === thoughtId) {
+                    return {
+                        ...thought,
+                        hearts: thought.hearts + 1,
+                    }
+                }
+                return thought
+            })
+        )
+        
 
         //Send updated likes count to the API
         fetch(`${API_URL}/${thoughtId}/like`, {
@@ -61,6 +76,9 @@ export const Thoughts = ({ thoughts }) => {
 
     return (
         <div>
+            {likeCount > 0 ? <p>You've liked {likeCount} thoughts 💞</p>
+            :
+            <p>You haven't liked any thoughts yet... go spread some love already 💗</p>}
             {thoughtsData.map((thought, index) => (
                 <div key={index}>
                     <p>{thought.message}</p>
@@ -72,6 +90,7 @@ export const Thoughts = ({ thoughts }) => {
                     <p>{moment(thought.createdAt).fromNow()}</p>
                 </div>
             ))}
+           
         </div>
     )
 }
