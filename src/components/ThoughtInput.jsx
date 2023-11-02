@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import API_URL from '../utils/urls'
+import '../index.css'
+
 
 export const ThoughtInput = ({ setThoughts }) => {
     const maxCharacters = 140
@@ -10,24 +12,32 @@ export const ThoughtInput = ({ setThoughts }) => {
     const [isCloseToLimit, setIsCloseToLimit] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [isVibrating, setIsVibrating] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const handleFormSubmit = (event) => {
         event.preventDefault()
 
+        setIsSubmitting(true) //Trigger animation for submit
+
         if (message.length < minCharacters) {
             setErrorMessage('Message is too short.')
             setIsVibrating(true)
+            setIsSubmitting(false)
             return
         } else if (message.length > maxCharacters) {
             setErrorMessage('Message is too long.')
             setIsVibrating(true)
+            setIsSubmitting(false)
             return
         } else {
             setErrorMessage('') //Clear error message
             setIsVibrating(false) //Stop vibrating
         }
 
+        setIsSubmitting(false)
+
         if (message.length < minCharacters || message.length > maxCharacters) {
+            setIsSubmitting(false) //Stop animation in case of error
             return //Don't proceed if message is too long or too short
         }
 
@@ -50,8 +60,10 @@ export const ThoughtInput = ({ setThoughts }) => {
             setThoughts((prevThoughts) => [newThought, ...prevThoughts])
             //Clear message input
             setMessage('')
+            setIsSubmitting(true) 
         })
         .catch(error => console.log('error: ', error))
+        //setIsSubmitting(false) //Stop animation in case of error
     }
 
 
@@ -86,7 +98,10 @@ export const ThoughtInput = ({ setThoughts }) => {
                     placeholder='My happy thought...'
                     value={message} 
                     onChange={handleInputChange}
-                    style={{ animation: isVibrating ? 'shake 0.5s' : 'none' }}
+                    className={isSubmitting ? 'bounce' : ''}
+                    style={{
+                        animation: isVibrating ? 'shake 0.5s' : 'none'
+                      }}
                     />
                 </div>
                 <p>Characters remaining:{" "} 
