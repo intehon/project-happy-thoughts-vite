@@ -79,13 +79,15 @@ export const Thoughts = ({ thoughts }) => {
 }
 
     return (
-        <>
-            {likeCount > 0 ? (
-                <p className='likesText'>You've liked {likeCount} thoughts so far 💞</p>
-            ) : (
-                <p className='likesText'>You haven't liked any thoughts yet... go spread some love already 💗</p>
-            )}
+
             <div className='thoughtWrapper'>
+                <div className='likedThoughtContainer'>
+                    {likeCount > 0 ? (
+                        <p className='likesText'>You've liked {likeCount} thoughts so far 💞</p>
+                    ) : (
+                        <p className='likesText'>You haven't liked any thoughts yet... go spread some love already 💗</p>
+                    )}
+                </div>
                 {loading ? (
                     <Loading />
                 ) : (
@@ -112,6 +114,5 @@ export const Thoughts = ({ thoughts }) => {
                     </>
             )}
             </div>
-        </>
     )
 }

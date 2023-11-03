@@ -85,7 +85,7 @@ export const ThoughtInput = ({ setThoughts }) => {
             onSubmit={handleFormSubmit}>
                 <label 
                 className='thoughtText'
-                htmlFor='message'>Share your happy thought:</label>
+                htmlFor='message'>What is making you happy right now?</label>
                 <div>
                     <textarea
                     id="message"
