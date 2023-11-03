@@ -9,7 +9,7 @@ export const App = () => {
   return (
     <main>
       <div className='contentWrapper'>
-        <Header text={'Happy Thoughts'}/>
+        <Header text={'Happy Thoughts!'}/>
         <ThoughtInput setThoughts={setThoughts} /> 
         <Thoughts thoughts={thoughts}/>
       </div>
