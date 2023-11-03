@@ -17,29 +17,23 @@ export const ThoughtInput = ({ setThoughts }) => {
     const handleFormSubmit = (event) => {
         event.preventDefault()
 
-        setIsSubmitting(true) //Trigger animation for submit
 
-        if (message.length < minCharacters) {
-            setErrorMessage('Message is too short.')
-            setIsVibrating(true)
-            setIsSubmitting(false)
-            return
-        } else if (message.length > maxCharacters) {
-            setErrorMessage('Message is too long.')
-            setIsVibrating(true)
-            setIsSubmitting(false)
+        if (message.length < minCharacters || message.length > maxCharacters) {
+            setErrorMessage(message.length < minCharacters ? 'Message is too short.' : 'Message is too long.')
+            setIsVibrating(true) //Start error animation
+            setIsSubmitting(false) //Stop submitting animation
             return
         } else {
             setErrorMessage('') //Clear error message
             setIsVibrating(false) //Stop vibrating
         }
 
-        setIsSubmitting(false)
-
         if (message.length < minCharacters || message.length > maxCharacters) {
             setIsSubmitting(false) //Stop animation in case of error
             return //Don't proceed if message is too long or too short
         }
+
+        setIsSubmitting(true) //Start animation
 
         //Store POST options in variable
         const options = {
@@ -60,10 +54,8 @@ export const ThoughtInput = ({ setThoughts }) => {
             setThoughts((prevThoughts) => [newThought, ...prevThoughts])
             //Clear message input
             setMessage('')
-            setIsSubmitting(true) 
         })
         .catch(error => console.log('error: ', error))
-        //setIsSubmitting(false) //Stop animation in case of error
     }
 
 
@@ -73,6 +65,7 @@ export const ThoughtInput = ({ setThoughts }) => {
 
             //Clear error message and vibration when user starts typing
             setErrorMessage('')
+            setIsVibrating(false) //Stop vibrating
 
             //Calculate remaining characters 
             const remainingCharacters = maxCharacters - inputText.length
@@ -98,7 +91,6 @@ export const ThoughtInput = ({ setThoughts }) => {
                     placeholder='My happy thought...'
                     value={message} 
                     onChange={handleInputChange}
-                    className={isSubmitting ? 'bounce' : ''}
                     style={{
                         animation: isVibrating ? 'shake 0.5s' : 'none'
                       }}
@@ -108,7 +100,11 @@ export const ThoughtInput = ({ setThoughts }) => {
                     <span style={{ color: isCloseToLimit ? 'orange' : isOverLimit ? 'red' : 'initial' }}>{characterCount}</span>
                 </p>
                 {errorMessage && <p style={{ fontStyle: 'italic', color: 'red' }}>{errorMessage}</p>}
-                <button type='submit'>Submit</button>
+                <button 
+                type='submit'
+                style={{
+                    animation: isSubmitting ? 'shake 0.5s' : 'none'
+                  }}>Submit</button>
             </form>
         </div>
     )

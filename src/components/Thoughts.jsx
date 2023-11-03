@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
 import API_URL from '../utils/urls'
 import moment from 'moment/moment'
+import { Loading } from './Loading'
 
 export const Thoughts = ({ thoughts }) => {
     const [thoughtsData, setThoughtsData] = useState([]) //State to store thoughts
     const [likedThoughts, setLikedThoughts] = useState([]) //State to store "likes" on thoughts
     const [likeCount, setLikeCount] = useState(0) //Initialize like count to 0
+    const [loading, setLoading] = useState(false)
 
     
     //Fetch the thoughts array from the API
     useEffect(() => {
+        setLoading(true) //Show loading spinner when fetching thoughts
         fetch(API_URL)
         .then(res => res.json())
         .then(data => {
@@ -18,6 +21,7 @@ export const Thoughts = ({ thoughts }) => {
             console.log(data) // Log data for debugging
         })
         .catch(error => console.log('error:', error))
+        .finally(() => setLoading(false)) //Stop loading spinner
 
         //Retrieve liked thought ID from local storage
         const storedLikedThoughts = localStorage.getItem('likedThoughts')
@@ -76,21 +80,30 @@ export const Thoughts = ({ thoughts }) => {
 
     return (
         <div>
-            {likeCount > 0 ? <p>You've liked {likeCount} thoughts 💞</p>
-            :
-            <p>You haven't liked any thoughts yet... go spread some love already 💗</p>}
-            {thoughtsData.map((thought, index) => (
-                <div key={index}>
-                    <p>{thought.message}</p>
-                    <button onClick={() => handleLikeClick(thought._id)}
-                    disabled={likedThoughts.includes(thought._id)}
-                    > 
-                    &hearts; {thought.hearts}
-                    </button>
-                    <p>{moment(thought.createdAt).fromNow()}</p>
-                </div>
-            ))}
-           
+            {loading ? (
+                <Loading />
+            ) : (
+                <>
+                    {likeCount > 0 ? (
+                        <p>You've liked {likeCount} thoughts 💞</p>
+                    ) : (
+                        <p>You haven't liked any thoughts yet... go spread some love already 💗</p>
+                    )}
+
+                    {thoughtsData.map((thought, index) => (
+                        <div key={index}>
+                            <p>{thought.message}</p>
+                            <button 
+                                onClick={() => handleLikeClick(thought._id)}
+                                disabled={likedThoughts.includes(thought._id)}
+                            > 
+                                &hearts; {thought.hearts}
+                            </button>
+                            <p>{moment(thought.createdAt).fromNow()}</p>
+                        </div>
+                    ))}
+                </>
+        )}
         </div>
     )
 }
