@@ -79,31 +79,39 @@ export const Thoughts = ({ thoughts }) => {
 }
 
     return (
-        <div>
-            {loading ? (
-                <Loading />
+        <>
+            {likeCount > 0 ? (
+                <p className='likesText'>You've liked {likeCount} thoughts so far 💞</p>
             ) : (
-                <>
-                    {likeCount > 0 ? (
-                        <p>You've liked {likeCount} thoughts 💞</p>
-                    ) : (
-                        <p>You haven't liked any thoughts yet... go spread some love already 💗</p>
-                    )}
+                <p className='likesText'>You haven't liked any thoughts yet... go spread some love already 💗</p>
+            )}
+            <div className='thoughtWrapper'>
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <>
 
-                    {thoughtsData.map((thought, index) => (
-                        <div key={index}>
-                            <p>{thought.message}</p>
-                            <button 
-                                onClick={() => handleLikeClick(thought._id)}
-                                disabled={likedThoughts.includes(thought._id)}
-                            > 
-                                &hearts; {thought.hearts}
-                            </button>
-                            <p>{moment(thought.createdAt).fromNow()}</p>
-                        </div>
-                    ))}
-                </>
-        )}
-        </div>
+                        {thoughtsData.map((thought, index) => (
+                            <div key={index}>
+                                <p className='messageText'>{thought.message}</p>
+                                <div className='likeContainer'>
+                                    <div className='likeBtnContainer'>
+                                        <button 
+                                            className={thought.hearts > 0 ? "heartBtn heartBtnClicked" : "heartBtn"}
+                                            onClick={() => handleLikeClick(thought._id)}
+                                            disabled={likedThoughts.includes(thought._id)}
+                                        >{' '}
+                                            <span className="heartIcon" role="img" aria-label="like">❤️</span>
+                                        </button>
+                                        <p>x {thought.hearts}</p>
+                                    </div>
+                                    <p className='date'>{moment(thought.createdAt).fromNow()}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </>
+            )}
+            </div>
+        </>
     )
 }

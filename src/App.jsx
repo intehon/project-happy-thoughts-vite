@@ -6,7 +6,7 @@ export const App = () => {
   const [thoughts, setThoughts] = useState([]) //State to store thoughts
 
   return (
-  <div>
+  <div className='contentWrapper'>
     {/* <Header />*/}
     <ThoughtInput setThoughts={setThoughts} /> 
      <Thoughts thoughts={thoughts}/>

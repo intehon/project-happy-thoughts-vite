@@ -80,12 +80,17 @@ export const ThoughtInput = ({ setThoughts }) => {
 
     return (
         <div>
-            <form onSubmit={handleFormSubmit}>
-                <label htmlFor='message'>Share your happy thought:</label>
+            <form 
+            className='formWrapper'
+            onSubmit={handleFormSubmit}>
+                <label 
+                className='thoughtText'
+                htmlFor='message'>Share your happy thought:</label>
                 <div>
                     <textarea
                     id="message"
                     name="message"
+                    className='formInput'
                     rows={3}
                     cols={30} 
                     placeholder='My happy thought...'
@@ -96,15 +101,21 @@ export const ThoughtInput = ({ setThoughts }) => {
                       }}
                     />
                 </div>
-                <p>Characters remaining:{" "} 
+                <p className='countText'>Characters remaining:{" "} 
                     <span style={{ color: isCloseToLimit ? 'orange' : isOverLimit ? 'red' : 'initial' }}>{characterCount}</span>
                 </p>
-                {errorMessage && <p style={{ fontStyle: 'italic', color: 'red' }}>{errorMessage}</p>}
+                {errorMessage && <p 
+                className='countTextError'>{errorMessage}</p>}
                 <button 
                 type='submit'
+                className='formBtn'
                 style={{
                     animation: isSubmitting ? 'shake 0.5s' : 'none'
-                  }}>Submit</button>
+                  }}>
+                    <span className="heartIcon" role="img" aria-label="like">❤️ </span>
+                    Send Happy Thought
+                    <span className="heartIcon" role="img" aria-label="like"> ❤️</span>
+                </button>
             </form>
         </div>
     )

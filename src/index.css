@@ -12,6 +12,142 @@ code {
     monospace;
 }
 
+main {
+  display: flex;
+  justify-content: center;
+  /* flex-wrap: wrap; */
+  margin: 10px 0;
+}
+
+.contentWrapper {
+  width: 450px;
+}
+
+.formWrapper {
+  background-color: rgb(242, 240, 240);
+  border: 2px solid black;
+  box-shadow: 6px 8px;
+  margin: 30px 15px;
+  line-height: 1rem;
+  padding: 10px 15px 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formInput {
+  border: 2px solid rgb(191, 191, 191);
+  margin-top: 12px;
+  height: 50px;
+  padding: 10px;
+  font-family: 'Roboto Mono', monospace;
+  /* font-size: 10px; */
+}
+
+.countText {
+  font-size: 10px;
+}
+
+.countTextError {
+  font-size: 10px;
+  color: red;
+}
+
+.thoughtText {
+  font-size: 12px;
+  letter-spacing: -0.5px;
+  /* margin-bottom: 12px; */
+}
+
+.thoughtWrapper {
+  background-color: white;
+  border: 2px solid black;
+  box-shadow: 6px 6px;
+  margin: 30px 15px;
+  line-height: 1rem;
+  padding: 0 15px;
+}
+
+.formBtn {
+  width: 50%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(255, 173, 173);
+  font-size: 12px;
+  font-weight: bold;
+  color: rgb(78, 52, 52);
+  cursor: pointer;
+}
+
+.formBtn:hover {
+  width: 52%;
+  font-size: 13px;
+}
+
+.optionalText {
+  color: #868686;
+}
+
+.messageText {
+  font-size: 14px;
+  overflow-wrap: break-word;
+  line-height: 2em;
+}
+
+.likeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  color: rgba(61, 61, 61, 0.8);
+  padding: 5px 0;
+  /* padding-bottom: 5px; */
+  margin-bottom: 8px;
+}
+
+.likeBtnContainer {
+  display: flex;
+  letter-spacing: 0.2em;
+  align-items: center;
+  color: rgb(162, 162, 162);
+  letter-spacing: -2px;
+  font-size: 12px;
+}
+
+.heartBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  background-color: rgb(234, 234, 234);
+  cursor: pointer;
+}
+
+.heartBtnClicked {
+  background-color: rgb(255, 173, 173);
+}
+
+.heartBtn:hover {
+  width: 43px;
+  height: 43px;
+}
+
+.likesText {
+  font-size: 11px;
+  color: rgb(162, 162, 162);
+  opacity: 0.8;
+}
+
+.date {
+  opacity: 0.5;
+  font-size: 11px;
+}
+
 .shake {
   animation: shake 0.5s;
 }
