@@ -34,6 +34,7 @@ export const ThoughtInput = ({ setThoughts }) => {
         }
 
         setIsSubmitting(true) //Start animation
+        setCharacterCount(maxCharacters) //Set character count back to 140 after posting
 
         //Store POST options in variable
         const options = {
