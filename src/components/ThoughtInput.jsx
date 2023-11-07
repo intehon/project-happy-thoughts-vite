@@ -2,7 +2,6 @@ import { useState } from 'react'
 import API_URL from '../utils/urls'
 import '../index.css'
 
-
 export const ThoughtInput = ({ setThoughts }) => {
     const maxCharacters = 140
     const minCharacters = 5
@@ -117,7 +116,7 @@ export const ThoughtInput = ({ setThoughts }) => {
                     <span className="heartIcon" role="img" aria-label="like">❤️ </span>
                     Send Happy Thought
                     <span className="heartIcon" role="img" aria-label="like"> ❤️</span>
-                </button>
+                </button> 
             </form>
         </div>
     )

@@ -80,8 +80,8 @@ export const Thoughts = ({ thoughts }) => {
 
     return (
 
-            <div className='thoughtWrapper'>
-                <div className='likedThoughtContainer'>
+            <div>
+                <div className='thoughtWrapper'>
                     {likeCount > 0 ? (
                         <p className='likesText'>You've liked {likeCount} thoughts so far 💞</p>
                     ) : (
@@ -94,7 +94,7 @@ export const Thoughts = ({ thoughts }) => {
                     <>
 
                         {thoughtsData.map((thought, index) => (
-                            <div key={index}>
+                            <div className="thoughtWrapper" key={index}>
                                 <p className='messageText'>{thought.message}</p>
                                 <div className='likeContainer'>
                                     <div className='likeBtnContainer'>
